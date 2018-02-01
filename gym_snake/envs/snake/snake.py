@@ -23,7 +23,7 @@ class Snake():
         length - starting number of units in snake's body
         """
 
-        self.direction = self.UP
+        self.direction = self.DOWN
         self.head = np.asarray(head_coord_start).astype(np.int)
         self.head_color = np.array([255,0,0], np.uint8)
         self.body = Queue()
