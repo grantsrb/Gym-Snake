@@ -2,7 +2,7 @@ import os, subprocess, time, signal
 import gym
 from gym import error, spaces, utils
 from gym.utils import seeding
-from snake import Controller
+from gym_snake.envs.snake import Controller
 
 try:
     import matplotlib.pyplot as plt
@@ -35,3 +35,10 @@ class SnakeExtraHardEnv(gym.Env):
             self.viewer.set_data(self.last_obs)
         plt.pause(0.1)
         plt.draw()
+
+    def _seed(self, x):
+        pass
+
+    @property
+    def action_space(self):
+        return self._action_space
