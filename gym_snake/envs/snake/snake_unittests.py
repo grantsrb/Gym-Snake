@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from snake import Snake
+from gym_snake.envs.snake import Snake
 
 class SnakeTests(unittest.TestCase):
 

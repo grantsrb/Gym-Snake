@@ -1,5 +1,6 @@
-from snake import Snake
-from snake import Grid
+from gym_snake.envs.snake import Snake
+from gym_snake.envs.snake import Grid
+import numpy as np
 
 class Controller():
     """

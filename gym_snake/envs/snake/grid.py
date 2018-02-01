@@ -1,5 +1,4 @@
 import numpy as np
-from snake import Snake
 
 class Grid():
 

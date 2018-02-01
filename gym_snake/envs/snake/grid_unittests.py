@@ -1,6 +1,6 @@
 import unittest
-from grid import Grid
-from snake import Snake
+from gym_snake.envs.grid import Grid
+from gym_snake.envs.snake import Snake
 import numpy as np
 
 class GridTests(unittest.TestCase):
