@@ -28,7 +28,7 @@ class Grid():
         height = self.grid_size[1]*self.unit_size
         width = self.grid_size[0]*self.unit_size
         channels = 3
-        self.grid = np.ones((height, width, channels), dtype=np.uint8)
+        self.grid = np.zeros((height, width, channels), dtype=np.uint8)
         self.grid[:,:,:] = self.SPACE_COLOR
 
     def color_of(self, coord):
@@ -63,7 +63,30 @@ class Grid():
         """
 
         self.draw(snake.head, head_color)
-        for i in range(snake.body.qsize):
+        for i in range(snake.body.qsize()):
             coord = snake.body.get()
             self.draw(coord, self.BODY_COLOR)
             snake.body.put(coord)
+
+    def erase_snake(self, snake):
+        """
+        Removes the argued snake's body and head from the grid.
+
+        snake - Snake object
+        """
+
+        for i in range(snake.body.qsize()):
+            self.draw(snake.body.get(), self.SPACE_COLOR)
+
+
+    def new_food(self):
+        """
+        Draws a food on a random, open unit of the grid.
+        """
+
+        coord_not_found = True
+        while(coord_not_found):
+            coord = (np.random.randint(0,self.grid_size[0]), np.random.randint(0,self.grid_size[1]))
+            if np.array_equal(self.color_of(coord), self.SPACE_COLOR):
+                coord_not_found = False
+        self.draw(coord, self.FOOD_COLOR)
