@@ -16,17 +16,17 @@ class Grid():
     FOOD_COLOR = np.array([0,0,255], dtype=np.uint8)
     SPACE_COLOR = np.array([0,255,0], dtype=np.uint8)
 
-    def __init__(self, grid_size=[30,30], space_size=10):
+    def __init__(self, grid_size=[30,30], unit_size=10):
         """
         grid_size - tuple, list, or ndarray specifying number of atomic units in
                     both the x and y direction
-        space_size - integer denoting the atomic size of grid units in pixels
+        unit_size - integer denoting the atomic size of grid units in pixels
         """
 
-        self.space_size = int(space_size)
+        self.unit_size = int(unit_size)
         self.grid_size = np.asarray(grid_size, dtype=np.int) # size in terms of units
-        height = self.grid_size[1]*self.space_size
-        width = self.grid_size[0]*self.space_size
+        height = self.grid_size[1]*self.unit_size
+        width = self.grid_size[0]*self.unit_size
         channels = 3
         self.grid = np.ones((height, width, channels), dtype=np.uint8)
         self.grid[:,:,:] = self.SPACE_COLOR
@@ -38,7 +38,7 @@ class Grid():
         coord - x,y integer coordinates as a tuple, list, or np array
         """
 
-        return self.grid[int(coord[1]*self.space_size), int(coord[0]*self.space_size), :]
+        return self.grid[int(coord[1]*self.unit_size), int(coord[0]*self.unit_size), :]
 
     def draw(self, coord, color):
         """
@@ -48,8 +48,8 @@ class Grid():
         color - [R,G,B] values as a tuple, list, or np array
         """
 
-        x = int(coord[0]*self.space_size)
-        end_x = x+self.space_size
-        y = int(coord[1]*self.space_size)
-        end_y = y+self.space_size
+        x = int(coord[0]*self.unit_size)
+        end_x = x+self.unit_size
+        y = int(coord[1]*self.unit_size)
+        end_y = y+self.unit_size
         self.grid[y:end_y, x:end_x, :] = np.asarray(color, dtype=np.uint8)
