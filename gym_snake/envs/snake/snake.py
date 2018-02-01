@@ -12,10 +12,10 @@ class Snake():
     than tracking each location of the snake's body.
     """
 
-    UP = 1
-    RIGHT = 2
-    DOWN = 3
-    LEFT = 4
+    UP = 0
+    RIGHT = 1
+    DOWN = 2
+    LEFT = 3
 
     def __init__(self, head_coord_start, length=3):
         """
@@ -26,8 +26,8 @@ class Snake():
         self.direction = self.UP
         self.head = np.asarray(head_coord_start).astype(np.int)
         self.body = Queue()
-        for i in range(length, 0, -1):
-            self.body.put(self.head-np.asarray([i,0]).astype(np.int))
+        for i in range(length-1, 0, -1):
+            self.body.put(self.head-np.asarray([0,i]).astype(np.int))
 
     def step(self, coord, direction):
         """
@@ -35,13 +35,13 @@ class Snake():
 
         coord - list, tuple, or numpy array
         direction - integer from 1-4 inclusive.
-            1: up
-            2: right
-            3: down
-            4: left
+            0: up
+            1: right
+            2: down
+            3: left
         """
 
-        assert direction < 5 and direction > 0
+        assert direction < 4 and direction >= 0
 
         if direction == self.UP:
             return np.asarray([coord[0], coord[1]+1]).astype(np.int)
@@ -62,19 +62,19 @@ class Snake():
         to 1, 2, 3, or 4 corresponding to up, right, down, left respectively.
 
         direction - integer from 1-4 inclusive.
-            1: up
-            2: right
-            3: down
-            4: left
+            0: up
+            1: right
+            2: down
+            3: left
         """
 
-        # Ensure direction is either 1, 2, 3, or 4
-        direction = (int(direction) % 4) + 1
+        # Ensure direction is either 0, 1, 2, or 3
+        direction = (int(direction) % 4)
 
         if np.abs(self.direction-direction) != 2:
             self.direction = direction
 
         self.body.put(self.head)
-        self.head = self.step(self.head, direction)
+        self.head = self.step(self.head, self.direction)
 
         return self.head
