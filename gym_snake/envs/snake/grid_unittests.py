@@ -35,13 +35,13 @@ class GridTests(unittest.TestCase):
     def test_color_of_Coordinate(self):
         grid = Grid(self.grid_size, self.unit_size)
         coord = [3,2]
-        expected_color = np.array([0,0,0], dtype=np.uint8)
+        expected_color = np.array(grid.BODY_COLOR, dtype=np.uint8)
         grid.grid[coord[1]*self.unit_size,coord[0]*self.unit_size,:] = expected_color
         self.assertTrue(np.array_equal(grid.color_of(coord),expected_color))
 
     def test_draw_Positive(self):
         grid = Grid(self.grid_size, self.unit_size)
-        expected_color = np.array([0,0,0], dtype=np.uint8)
+        expected_color = np.array(grid.BODY_COLOR, dtype=np.uint8)
         coord = [3,2]
         grid.draw(coord, expected_color)
         for y in range(grid.grid.shape[0]):
@@ -127,6 +127,75 @@ class GridTests(unittest.TestCase):
 
         grid.new_food()
         self.assertTrue(np.array_equal(grid.color_of(expected_coord), grid.FOOD_COLOR))
+
+    def test_snake_space_BODY(self):
+        grid = Grid(self.grid_size, self.unit_size)
+        coord = (10,11)
+        grid.draw(coord, grid.BODY_COLOR)
+        self.assertTrue(grid.snake_space(coord))
+
+    def test_snake_space_HEAD(self):
+        grid = Grid(self.grid_size, self.unit_size)
+        coord = (10,11)
+        grid.draw(coord, grid.HEAD_COLOR)
+        self.assertTrue(grid.snake_space(coord))
+
+    def test_snake_space_FOOD(self):
+        grid = Grid(self.grid_size, self.unit_size)
+        coord = (10,11)
+        grid.draw(coord, grid.FOOD_COLOR)
+        self.assertFalse(grid.snake_space(coord))
+
+    def test_snake_space_SPACE(self):
+        grid = Grid(self.grid_size, self.unit_size)
+        coord = (10,11)
+        grid.draw(coord, grid.SPACE_COLOR)
+        self.assertFalse(grid.snake_space(coord))
+
+    def test_off_grid_UP(self):
+        grid = Grid(self.grid_size, self.unit_size)
+        coord = (0,-1)
+        self.assertTrue(grid.off_grid(coord))
+
+    def test_off_grid_RIGHT(self):
+        grid = Grid(self.grid_size, self.unit_size)
+        coord = (self.grid_size[0],0)
+        self.assertTrue(grid.off_grid(coord))
+
+    def test_off_grid_DOWN(self):
+        grid = Grid(self.grid_size, self.unit_size)
+        coord = (0,self.grid_size[1])
+        self.assertTrue(grid.off_grid(coord))
+
+    def test_off_grid_LEFT(self):
+        grid = Grid(self.grid_size, self.unit_size)
+        coord = (-1,0)
+        self.assertTrue(grid.off_grid(coord))
+
+    def test_food_space_FOOD(self):
+        grid = Grid(self.grid_size, self.unit_size)
+        coord = (10,11)
+        grid.draw(coord, grid.FOOD_COLOR)
+        self.assertTrue(grid.food_space(coord))
+
+    def test_food_space_BODY(self):
+        grid = Grid(self.grid_size, self.unit_size)
+        coord = (10,11)
+        grid.draw(coord, grid.BODY_COLOR)
+        self.assertFalse(grid.food_space(coord))
+
+    def test_food_space_HEAD(self):
+        grid = Grid(self.grid_size, self.unit_size)
+        coord = (10,11)
+        grid.draw(coord, grid.HEAD_COLOR)
+        self.assertFalse(grid.food_space(coord))
+
+    def test_food_space_SPACE(self):
+        grid = Grid(self.grid_size, self.unit_size)
+        coord = (10,11)
+        grid.draw(coord, grid.SPACE_COLOR)
+        self.assertFalse(grid.food_space(coord))
+
 
 
 

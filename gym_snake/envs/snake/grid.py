@@ -1,6 +1,5 @@
 import numpy as np
 from snake import Snake
-from food import Food
 
 class Grid():
 
@@ -9,9 +8,12 @@ class Grid():
     The information is stored as a numpy array of pixels.
     The grid is treated as a cartesian [x,y] plane in which [0,0] is located at
     the upper left most pixel and [max_x, max_y] is located at the lower right most pixel.
+
+    Note that it is assumed spaces that can kill a snake have a non-zero value as their 0 channel.
+    It is also assumed that HEAD_COLOR has a 255 value as its 0 channel.
     """
 
-    BODY_COLOR = np.array([0,0,0], dtype=np.uint8)
+    BODY_COLOR = np.array([1,0,0], dtype=np.uint8)
     HEAD_COLOR = np.array([255, 0, 0], dtype=np.uint8)
     FOOD_COLOR = np.array([0,0,255], dtype=np.uint8)
     SPACE_COLOR = np.array([0,255,0], dtype=np.uint8)
@@ -30,6 +32,14 @@ class Grid():
         channels = 3
         self.grid = np.zeros((height, width, channels), dtype=np.uint8)
         self.grid[:,:,:] = self.SPACE_COLOR
+
+    def check_death(self, head_coord):
+        """
+        Checks the grid to see if argued head_coord has collided with a death space (i.e. snake or wall)
+
+        head_coord - x,y integer coordinates as a tuple, list, or ndarray
+        """
+        return self.off_grid(head_coord) or self.snake_space(head_coord)
 
     def color_of(self, coord):
         """
@@ -78,6 +88,14 @@ class Grid():
         for i in range(snake.body.qsize()):
             self.draw(snake.body.get(), self.SPACE_COLOR)
 
+    def food_space(self, coord):
+        """
+        Checks if argued coord is snake food
+
+        coord - x,y integer coordinates as a tuple, list, or ndarray
+        """
+
+        return np.array_equal(self.color_of(coord), self.FOOD_COLOR)
 
     def new_food(self):
         """
@@ -90,3 +108,22 @@ class Grid():
             if np.array_equal(self.color_of(coord), self.SPACE_COLOR):
                 coord_not_found = False
         self.draw(coord, self.FOOD_COLOR)
+
+    def off_grid(self, coord):
+        """
+        Checks if argued coord is off of the grid
+
+        coord - x,y integer coordinates as a tuple, list, or ndarray
+        """
+
+        return coord[0]<0 or coord[0]>=self.grid_size[0] or coord[1]<0 or coord[1]>=self.grid_size[1]
+
+    def snake_space(self, coord):
+        """
+        Checks if argued coord is occupied by a snake
+
+        coord - x,y integer coordinates as a tuple, list, or ndarray
+        """
+
+        color = self.color_of(coord)
+        return np.array_equal(color, self.BODY_COLOR) or color[0] == self.HEAD_COLOR[0]
