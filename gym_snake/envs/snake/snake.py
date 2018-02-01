@@ -6,7 +6,7 @@ class Snake():
     """
     The Snake class holds all pertinent information regarding the Snake's movement and boday.
     The position of the snake is tracked using a queue that stores the positions of the body.
-    
+
     Note:
     A potentially more space efficient implementation could track directional changes rather
     than tracking each location of the snake's body.
@@ -17,14 +17,18 @@ class Snake():
     DOWN = 3
     LEFT = 4
 
-    def __init__(self, head_xy, length=3):
+    def __init__(self, head_coord_start, length=3):
+        """
+        head_coord_start - tuple, list, or ndarray denoting the starting coordinates for the snake's head
+        length - starting number of units in snake's body
+        """
 
         self.direction = self.UP
-        self.head = np.asarray(head_xy).astype(np.int)
+        self.head = np.asarray(head_coord_start).astype(np.int)
         self.body = Queue()
         for i in range(length, 0, -1):
             self.body.put(self.head-np.asarray([i,0]).astype(np.int))
-    
+
     def step(self, coord, direction):
         """
         Takes a step in the specified direction from the specified coordinate.
@@ -38,7 +42,7 @@ class Snake():
         """
 
         assert direction < 5 and direction > 0
-        
+
         if direction == self.UP:
             return np.asarray([coord[0], coord[1]+1]).astype(np.int)
         elif direction == self.RIGHT:
@@ -65,7 +69,7 @@ class Snake():
         """
 
         # Ensure direction is either 1, 2, 3, or 4
-        direction = (int(direction) % 4) + 1 
+        direction = (int(direction) % 4) + 1
 
         if np.abs(self.direction-direction) != 2:
             self.direction = direction
@@ -74,4 +78,3 @@ class Snake():
         self.head = self.step(self.head, direction)
 
         return self.head
-
