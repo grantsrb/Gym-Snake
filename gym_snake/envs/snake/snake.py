@@ -19,8 +19,6 @@ class Snake():
 
     def __init__(self, head_xy, length=3):
 
-        assert type(head_
-
         self.direction = self.UP
         self.head = np.asarray(head_xy).astype(np.int)
         self.body = Queue()
