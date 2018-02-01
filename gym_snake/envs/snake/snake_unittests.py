@@ -23,7 +23,7 @@ class SnakeTests(unittest.TestCase):
 
     def test_step_UP(self):
         kaa = Snake(self.head_xy, self.bod_len)
-        expected_coord = [0,1]
+        expected_coord = [0,-1]
         actual_coord = kaa.step(kaa.head, kaa.UP)
         self.assertTrue(np.array_equal(expected_coord,actual_coord))
 
@@ -35,7 +35,7 @@ class SnakeTests(unittest.TestCase):
 
     def test_step_DOWN(self):
         kaa = Snake(self.head_xy, self.bod_len)
-        expected_coord = [0,-1]
+        expected_coord = [0,1]
         actual_coord = kaa.step(kaa.head,kaa.DOWN)
         self.assertTrue(np.array_equal(expected_coord,actual_coord))
 
@@ -47,7 +47,7 @@ class SnakeTests(unittest.TestCase):
 
     def test_action_UP(self):
         kaa = Snake(self.head_xy, self.bod_len)
-        expected_coord = [0,1]
+        expected_coord = [0,-1]
         actual_coord = kaa.action(kaa.UP)
         self.assertTrue(np.array_equal(expected_coord,actual_coord))
 
@@ -60,7 +60,7 @@ class SnakeTests(unittest.TestCase):
     def test_action_DOWN(self):
         kaa = Snake(self.head_xy, self.bod_len)
         kaa.direction = kaa.DOWN
-        expected_coord = [0,-1]
+        expected_coord = [0,1]
         actual_coord = kaa.action(kaa.DOWN)
         self.assertTrue(np.array_equal(expected_coord,actual_coord))
 
@@ -72,7 +72,7 @@ class SnakeTests(unittest.TestCase):
 
     def test_action_UP_outofrange(self):
         kaa = Snake(self.head_xy, self.bod_len)
-        expected_coord = [0,1]
+        expected_coord = [0,-1]
         actual_coord = kaa.action(kaa.UP+4)
         self.assertTrue(np.array_equal(expected_coord,actual_coord))
 
@@ -85,7 +85,7 @@ class SnakeTests(unittest.TestCase):
     def test_action_DOWN_outofrange(self):
         kaa = Snake(self.head_xy, self.bod_len)
         kaa.direction = kaa.DOWN
-        expected_coord = [0,-1]
+        expected_coord = [0,1]
         actual_coord = kaa.action(kaa.DOWN+4)
         self.assertTrue(np.array_equal(expected_coord,actual_coord))
 
@@ -98,7 +98,7 @@ class SnakeTests(unittest.TestCase):
     def test_action_UP_backwards(self):
         kaa = Snake(self.head_xy, self.bod_len)
         head = kaa.action(kaa.DOWN)
-        self.assertTrue(np.array_equal(head, [0,1]))
+        self.assertTrue(np.array_equal(head, [0,-1]))
 
     def test_action_RIGHT_backwards(self):
         kaa = Snake(self.head_xy, self.bod_len)
@@ -110,7 +110,7 @@ class SnakeTests(unittest.TestCase):
         kaa = Snake(self.head_xy, self.bod_len)
         kaa.direction = kaa.DOWN
         head = kaa.action(kaa.UP)
-        self.assertTrue(np.array_equal(head, [0,-1]))
+        self.assertTrue(np.array_equal(head, [0,1]))
 
     def test_action_LEFT_backwards(self):
         kaa = Snake(self.head_xy, self.bod_len)

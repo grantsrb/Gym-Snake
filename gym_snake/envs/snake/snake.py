@@ -25,6 +25,7 @@ class Snake():
 
         self.direction = self.UP
         self.head = np.asarray(head_coord_start).astype(np.int)
+        self.head_color = np.array([255,0,0], np.uint8)
         self.body = Queue()
         for i in range(length-1, 0, -1):
             self.body.put(self.head-np.asarray([0,i]).astype(np.int))
@@ -44,11 +45,11 @@ class Snake():
         assert direction < 4 and direction >= 0
 
         if direction == self.UP:
-            return np.asarray([coord[0], coord[1]+1]).astype(np.int)
+            return np.asarray([coord[0], coord[1]-1]).astype(np.int)
         elif direction == self.RIGHT:
             return np.asarray([coord[0]+1, coord[1]]).astype(np.int)
         elif direction == self.DOWN:
-            return np.asarray([coord[0], coord[1]-1]).astype(np.int)
+            return np.asarray([coord[0], coord[1]+1]).astype(np.int)
         else:
             return np.asarray([coord[0]-1, coord[1]]).astype(np.int)
 
