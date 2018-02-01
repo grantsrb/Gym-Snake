@@ -12,6 +12,7 @@ class Controller():
         assert snake_size < grid_size[1]//2
 
         self.done = False
+        unit_size = np.maximum(4, unit_size)
         self.grid = Grid(grid_size, unit_size)
 
         self.snakes = []
@@ -87,4 +88,7 @@ class Controller():
                 rewards.append(0)
 
         self.done = done
-        return self.grid.grid, rewards, done, {"snakes_left":snakes_left}
+        if len(rewards) is 1:
+            return self.grid.grid, rewards[0], done, {"snakes_left":snakes_left}
+        else:
+            return self.grid.grid, rewards, done, {"snakes_left":snakes_left}
