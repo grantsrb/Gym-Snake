@@ -46,7 +46,7 @@ class GridTests(unittest.TestCase):
         grid.draw(coord, expected_color)
         for y in range(grid.grid.shape[0]):
             for x in range(grid.grid.shape[1]):
-                if y >= coord[1]*self.unit_size and y < coord[1]*self.unit_size+grid.unit_size and x >= coord[0]*self.unit_size and x < coord[0]*self.unit_size+grid.unit_size:
+                if y >= coord[1]*self.unit_size and y < coord[1]*self.unit_size+grid.unit_size-grid.DRAW_SPACE and x >= coord[0]*self.unit_size and x < coord[0]*self.unit_size+grid.unit_size-grid.DRAW_SPACE:
                     self.assertTrue(np.array_equal(grid.grid[y,x,:],expected_color))
                 else:
                     self.assertFalse(np.array_equal(grid.grid[y,x,:],expected_color))
@@ -58,7 +58,7 @@ class GridTests(unittest.TestCase):
         grid.draw(coord, grid.BODY_COLOR)
         for y in range(grid.grid.shape[0]):
             for x in range(grid.grid.shape[1]):
-                if y >= coord[1]*self.unit_size and y < coord[1]*self.unit_size+grid.unit_size and x >= coord[0]*self.unit_size and x < coord[0]*self.unit_size+grid.unit_size:
+                if y >= coord[1]*self.unit_size and y < coord[1]*self.unit_size+grid.unit_size-grid.DRAW_SPACE and x >= coord[0]*self.unit_size and x < coord[0]*self.unit_size+grid.unit_size-grid.DRAW_SPACE:
                     self.assertFalse(np.array_equal(grid.grid[y,x,:],expected_color))
                 else:
                     self.assertTrue(np.array_equal(grid.grid[y,x,:],expected_color))

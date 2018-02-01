@@ -17,6 +17,7 @@ class Grid():
     HEAD_COLOR = np.array([255, 0, 0], dtype=np.uint8)
     FOOD_COLOR = np.array([0,0,255], dtype=np.uint8)
     SPACE_COLOR = np.array([0,255,0], dtype=np.uint8)
+    DRAW_SPACE = 2
 
     def __init__(self, grid_size=[30,30], unit_size=10):
         """
@@ -59,9 +60,9 @@ class Grid():
         """
 
         x = int(coord[0]*self.unit_size)
-        end_x = x+self.unit_size
+        end_x = x+self.unit_size-self.DRAW_SPACE
         y = int(coord[1]*self.unit_size)
-        end_y = y+self.unit_size
+        end_y = y+self.unit_size-self.DRAW_SPACE
         self.grid[y:end_y, x:end_x, :] = np.asarray(color, dtype=np.uint8)
 
     def draw_snake(self, snake, head_color=HEAD_COLOR):
