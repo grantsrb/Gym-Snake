@@ -61,6 +61,32 @@ class GridTests(unittest.TestCase):
                 else:
                     self.assertTrue(np.array_equal(grid.grid[i,j,:],expected_color2))
 
+    def draw_snake_Positive_Test(self):
+        grid = Grid(self.grid_size, self.unit_size)
+        snake_size = 3
+        head_coord = [10,10]
+        snake = Snake(head_coord, snake_size)
+        grid.draw_snake(snake, grid.HEAD_COLOR)
+
+        expected_colors = np.array([grid.HEAD_COLOR] + [grid.BODY_COLOR]*2, dtype=np.uint8)
+        expected_coords = np.array([[10,10], [10,9], [10,8]])
+        for coord,color in zip(expected_coords, expected_colors):
+            self.assertTrue(np.array_equal(grid.color_of(coord), color))
+
+    def draw_snake_Negative_Test(self):
+        grid = Grid(self.grid_size, self.unit_size)
+        snake_size = 3
+        head_coord = [10,10]
+        snake = Snake(head_coord, snake_size)
+        grid.draw_snake(snake, grid.HEAD_COLOR)
+
+        expected_color = grid.SPACE_COLOR
+        expected_coords = [(10,10), (10,9), (10,8)]
+        for i,j in range(grid.grid_size[0],grid.grid_size[1]):
+            if (i,j) == expected_coords[0] or (i,j) == expected_coords[1] or (i,j) == expected_coords[2]:
+                self.assertFalse(np.array_equal(grid.color_of(coord), expected_color))
+            else:
+                self.assertTrue(np.array_equal(grid.color_of(coord), expected_color))
 
 
 if __name__ == "__main__":

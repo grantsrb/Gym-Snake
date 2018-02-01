@@ -35,7 +35,7 @@ class Grid():
         """
         Returns the color of the specified coordinate
 
-        coord - x,y integer coordinates as a tuple, list, or np array
+        coord - x,y integer coordinates as a tuple, list, or ndarray
         """
 
         return self.grid[int(coord[1]*self.unit_size), int(coord[0]*self.unit_size), :]
@@ -44,8 +44,8 @@ class Grid():
         """
         Colors a single space on the grid
 
-        coord - x,y integer coordinates as a tuple, list, or np array
-        color - [R,G,B] values as a tuple, list, or np array
+        coord - x,y integer coordinates as a tuple, list, or ndarray
+        color - [R,G,B] values as a tuple, list, or ndarray
         """
 
         x = int(coord[0]*self.unit_size)
@@ -53,3 +53,17 @@ class Grid():
         y = int(coord[1]*self.unit_size)
         end_y = y+self.unit_size
         self.grid[y:end_y, x:end_x, :] = np.asarray(color, dtype=np.uint8)
+
+    def draw_snake(self, snake, head_color=HEAD_COLOR):
+        """
+        Draws a snake with the given head color.
+
+        snake - Snake object
+        head_color - [R,G,B] values as a tuple, list, or ndarray
+        """
+
+        self.draw(snake.head, head_color)
+        for i in range(snake.body.qsize):
+            coord = snake.body.get()
+            self.draw(coord, self.BODY_COLOR)
+            snake.body.put(coord)
