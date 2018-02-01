@@ -17,10 +17,10 @@ class Controller():
         self.grid = Grid(grid_size, unit_size)
 
         self.snakes = []
-        for i in range(n_snakes):
-            start_coord = [i*grid_size[0]//n_snakes, snake_size+1]
+        for i in range(1,n_snakes+1):
+            start_coord = [i*grid_size[0]//(n_snakes+1), snake_size+1]
             self.snakes.append(Snake(start_coord, snake_size))
-            color = [self.grid.HEAD_COLOR[0], i*255//n_snakes, 0]
+            color = [self.grid.HEAD_COLOR[0], (i-1)*255//n_snakes, 0]
             self.snakes[-1].head_color = color
             self.grid.draw_snake(self.snakes[-1], color)
 
