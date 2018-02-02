@@ -37,7 +37,8 @@ class Controller():
         assert type(snake) != type(None)
 
         # Cover old head position with body
-        self.grid.draw(snake.head, self.grid.BODY_COLOR)
+        snake_neck = snake.head
+        self.grid.draw(snake_neck, self.grid.BODY_COLOR)
         # Find next head position conditioned on direction
         snake.action(direction)
 
@@ -54,11 +55,13 @@ class Controller():
             self.grid.new_food()
         else:
             reward = 0
-            empty_coord = snake.body.get()
-            self.grid.draw(empty_coord, self.grid.SPACE_COLOR)
+            empty_coord = snake.body.popleft()
+            self.grid.connect(empty_coord, snake.body[0], self.grid.SPACE_COLOR)
+            self.grid.erase(empty_coord)
 
         # Draw new head position
         self.grid.draw(snake.head, snake.head_color)
+        self.grid.connect(snake_neck, snake.head, self.grid.BODY_COLOR)
 
         return reward
 
