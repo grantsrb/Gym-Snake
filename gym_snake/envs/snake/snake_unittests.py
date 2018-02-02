@@ -14,8 +14,8 @@ class SnakeTests(unittest.TestCase):
     def test_body_Initialization(self):
         kaa = Snake(self.head_xy, self.bod_len)
         expected_body_coords = [[0,-2], [0,-1]]
-        for i in range(kaa.body.qsize()):
-            self.assertTrue(np.array_equal(kaa.body.get(), expected_body_coords[i]))
+        for i in range(len(kaa.body)):
+            self.assertTrue(np.array_equal(kaa.body.popleft(), expected_body_coords[i]))
 
     def test_step_UP(self):
         kaa = Snake(self.head_xy, self.bod_len)

@@ -1,4 +1,4 @@
-from queue import Queue
+from queue import deque
 import numpy as np
 
 class Snake():
@@ -26,9 +26,9 @@ class Snake():
         self.direction = self.DOWN
         self.head = np.asarray(head_coord_start).astype(np.int)
         self.head_color = np.array([255,0,0], np.uint8)
-        self.body = Queue()
+        self.body = deque()
         for i in range(length-1, 0, -1):
-            self.body.put(self.head-np.asarray([0,i]).astype(np.int))
+            self.body.append(self.head-np.asarray([0,i]).astype(np.int))
 
     def step(self, coord, direction):
         """
@@ -55,7 +55,7 @@ class Snake():
 
     def action(self, direction):
         """
-        This method sets a new head coordinate and puts the old head
+        This method sets a new head coordinate and appends the old head
         into the body queue. The Controller class handles popping the
         last piece of the body if no food is eaten on this step.
 
@@ -75,7 +75,7 @@ class Snake():
         if np.abs(self.direction-direction) != 2:
             self.direction = direction
 
-        self.body.put(self.head)
+        self.body.append(self.head)
         self.head = self.step(self.head, self.direction)
 
         return self.head
