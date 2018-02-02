@@ -50,6 +50,37 @@ class Grid():
 
         return self.grid[int(coord[1]*self.unit_size), int(coord[0]*self.unit_size), :]
 
+    def connect(self, coord1, coord2, color=BODY_COLOR):
+        """
+        Draws connection between two adjacent pieces using the specified color.
+        Created to indicate the relative ordering of the snake's body.
+        coord1 and coord2 must be adjacent.
+
+        coord1 - x,y integer coordinates as a tuple, list, or ndarray
+        coord2 - x,y integer coordinates as a tuple, list, or ndarray
+        color - [R,G,B] values as a tuple, list, or ndarray
+        """
+
+        # Check for adjacency
+        # Next to one another:
+        adjacency1 = (np.abs(coord1[0]-coord2[0]) == 1 and np.abs(coord1[1]-coord2[1]) == 0)
+        # Stacked on one another:
+        adjacency2  = (np.abs(coord1[0]-coord2[0]) == 0 and np.abs(coord1[1]-coord2[1]) == 1)
+        assert adjacency1 or adjacency2
+
+        if adjacency1: # x values differ
+            min_x, max_x = sorted([coord1[0], coord2[0]])
+            min_x = min_x*self.unit_size+self.unit_size-self.DRAW_SPACE
+            max_x = max_x*self.unit_size
+            self.grid[coord1[1]*self.unit_size, min_x:max_x, :] = color
+            self.grid[coord1[1]*self.unit_size+self.unit_size-self.DRAW_SPACE-1, min_x:max_x, :] = color
+        else: # y values differ
+            min_y, max_y = sorted([coord1[1], coord2[1]])
+            min_y = min_y*self.unit_size+self.unit_size-self.DRAW_SPACE
+            max_y = max_y*self.unit_size
+            self.grid[min_y:max_y, coord1[0]*self.unit_size, :] = color
+            self.grid[min_y:max_y, coord1[0]*self.unit_size+self.unit_size-self.DRAW_SPACE-1, :] = color
+
     def draw(self, coord, color):
         """
         Colors a single space on the grid
@@ -64,6 +95,7 @@ class Grid():
         end_y = y+self.unit_size-self.DRAW_SPACE
         self.grid[y:end_y, x:end_x, :] = np.asarray(color, dtype=np.uint8)
 
+
     def draw_snake(self, snake, head_color=HEAD_COLOR):
         """
         Draws a snake with the given head color.
@@ -73,10 +105,50 @@ class Grid():
         """
 
         self.draw(snake.head, head_color)
-        for i in range(snake.body.qsize()):
-            coord = snake.body.get()
+        prev_coord = None
+        for i in range(len(snake.body)):
+            coord = snake.body.popleft()
             self.draw(coord, self.BODY_COLOR)
-            snake.body.put(coord)
+            if prev_coord is not None:
+                self.connect(prev_coord, coord, self.BODY_COLOR)
+            snake.body.append(coord)
+            prev_coord = coord
+        self.connect(prev_coord, snake.head, self.BODY_COLOR)
+
+    def erase(self, coord):
+        """
+        Colors the entire coordinate with SPACE_COLOR to erase potential
+        connection lines
+
+        coord - (x,y) as tuple, list, or ndarray
+        """
+        x = int(coord[0]*self.unit_size)
+        end_x = x+self.unit_size
+        y = int(coord[1]*self.unit_size)
+        end_y = y+self.unit_size
+        self.grid[y:end_y, x:end_x, :] = self.SPACE_COLOR
+
+    def erase_connections(self, coord):
+        """
+        Colors the dead space of the given coordinate with SPACE_COLOR to erase potential
+        connection lines
+
+        coord - (x,y) as tuple, list, or ndarray
+        """
+
+        # Erase Horizontal Row Below Coord
+        x = int(coord[0]*self.unit_size)
+        end_x = x+self.unit_size
+        y = int(coord[1]*self.unit_size)+self.unit_size-self.DRAW_SPACE
+        end_y = y+self.DRAW_SPACE
+        self.grid[y:end_y, x:end_x, :] = self.SPACE_COLOR
+
+        # Erase the Vertical Column to Right of Coord
+        x = int(coord[0]*self.unit_size)+self.unit_size-self.DRAW_SPACE
+        end_x = x+self.DRAW_SPACE
+        y = int(coord[1]*self.unit_size)
+        end_y = y+self.unit_size
+        self.grid[y:end_y, x:end_x, :] = self.SPACE_COLOR
 
     def erase_snake(self, snake):
         """
@@ -85,8 +157,8 @@ class Grid():
         snake - Snake object
         """
 
-        for i in range(snake.body.qsize()):
-            self.draw(snake.body.get(), self.SPACE_COLOR)
+        for i in range(len(snake.body)):
+            self.erase(snake.body.popleft())
 
     def food_space(self, coord):
         """

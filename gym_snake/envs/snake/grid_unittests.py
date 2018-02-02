@@ -1,6 +1,6 @@
 import unittest
-from gym_snake.envs.grid import Grid
-from gym_snake.envs.snake import Snake
+from grid import Grid
+from snake import Snake
 import numpy as np
 
 class GridTests(unittest.TestCase):
@@ -99,8 +99,8 @@ class GridTests(unittest.TestCase):
         grid.draw_snake(snake, grid.HEAD_COLOR)
 
         expected_coords = [[10,8],[10,9]]
-        for i in range(snake.body.qsize()):
-            self.assertTrue(np.array_equal(snake.body.get(), expected_coords[i]))
+        for i in range(len(snake.body)):
+            self.assertTrue(np.array_equal(snake.body.popleft(), expected_coords[i]))
 
     def test_erase_snake(self):
         grid = Grid(self.grid_size, self.unit_size)
@@ -196,6 +196,61 @@ class GridTests(unittest.TestCase):
         grid.draw(coord, grid.SPACE_COLOR)
         self.assertFalse(grid.food_space(coord))
 
+    def test_connect_x(self):
+        grid = Grid(self.grid_size, self.unit_size)
+        expected_color = grid.BODY_COLOR
+        coord1 = [3,2]
+        coord2 = [4,2]
+        grid.connect(coord1, coord2, expected_color)
+        for y in range(grid.grid.shape[0]):
+            for x in range(grid.grid.shape[1]):
+                if (y == coord1[1]*self.unit_size or y == coord1[1]*self.unit_size+grid.unit_size-grid.DRAW_SPACE-1) and (x < coord2[0]*self.unit_size and x >= coord1[0]*self.unit_size+grid.unit_size-grid.DRAW_SPACE):
+                    self.assertTrue(np.array_equal(grid.grid[y,x,:],expected_color))
+                else:
+                    self.assertFalse(np.array_equal(grid.grid[y,x,:],expected_color))
+
+    def test_connect_y(self):
+        grid = Grid(self.grid_size, self.unit_size)
+        expected_color = grid.BODY_COLOR
+        coord1 = [2,3]
+        coord2 = [2,4]
+        grid.connect(coord1, coord2, expected_color)
+        for y in range(grid.grid.shape[0]):
+            for x in range(grid.grid.shape[1]):
+                if (x == coord1[0]*self.unit_size or x == coord1[0]*self.unit_size+grid.unit_size-grid.DRAW_SPACE-1) and (y < coord2[1]*self.unit_size and y >= coord1[1]*self.unit_size+grid.unit_size-grid.DRAW_SPACE):
+                    self.assertTrue(np.array_equal(grid.grid[y,x,:],expected_color))
+                else:
+                    self.assertFalse(np.array_equal(grid.grid[y,x,:],expected_color))
+
+    def test_erase(self):
+        grid = Grid(self.grid_size, self.unit_size)
+        coord1 = [2,3]
+        coord2 = [2,4]
+        grid.draw(coord1, grid.BODY_COLOR)
+        grid.draw(coord2, grid.BODY_COLOR)
+        grid.connect(coord1,coord2)
+        expected_color = grid.SPACE_COLOR
+        grid.erase(coord1)
+        grid.erase(coord2)
+        for y in range(grid.grid.shape[0]):
+            for x in range(grid.grid.shape[1]):
+                self.assertTrue(np.array_equal(grid.grid[y,x,:],expected_color))
+
+    def test_erase_connections(self):
+        grid = Grid(self.grid_size, self.unit_size)
+        coord1 = [2,3]
+        coord2 = [2,4]
+        grid.draw(coord1, grid.BODY_COLOR)
+        grid.connect(coord1,coord2)
+        grid.erase_connections(coord1)
+        for y in range(grid.grid.shape[0]):
+            for x in range(grid.grid.shape[1]):
+                if y >= coord1[1]*self.unit_size and y < coord1[1]*self.unit_size+grid.unit_size-grid.DRAW_SPACE and x >= coord1[0]*self.unit_size and x < coord1[0]*self.unit_size+grid.unit_size-grid.DRAW_SPACE:
+                    self.assertTrue(np.array_equal(grid.grid[y,x,:],grid.BODY_COLOR))
+                else:
+                    self.assertFalse(np.array_equal(grid.grid[y,x,:],grid.BODY_COLOR))
+                
+        
 
 
 
