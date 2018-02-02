@@ -12,22 +12,22 @@ except ImportError as e:
 class SnakeEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, grid_size=[30,30], unit_size=10, snake_size=3, n_snakes=1, n_foods=1):
+    def __init__(self, grid_size=[30,30], unit_size=10, unit_gap=1, snake_size=3, n_snakes=1, n_foods=1):
         self.grid_size = grid_size
         self.unit_size = unit_size
+        self.unit_gap = unit_gap
         self.snake_size = snake_size
         self.n_snakes = n_snakes
         self.n_foods = n_foods
         self.viewer = None
-        self._action_space = [0,1,2,3]
+        self.action_space = [0,1,2,3]
 
     def _step(self, action):
         return self.controller.step(action)
 
     def _reset(self):
-        self.controller = Controller(self.grid_size, self.unit_size, self.snake_size, self.n_snakes, self.n_foods)
-        self.last_obs = self.controller.grid.grid
-        return self.last_obs
+        self.controller = Controller(self.grid_size, self.unit_size, self.unit_gap, self.snake_size, self.n_snakes, self.n_foods)
+        return self.controller.grid.grid
 
     def _render(self, mode='human', close=False):
         if self.viewer is None:
@@ -39,9 +39,5 @@ class SnakeEnv(gym.Env):
 
     def _seed(self, x):
         pass
-
-    @property
-    def action_space(self):
-        return self._action_space
 
     
