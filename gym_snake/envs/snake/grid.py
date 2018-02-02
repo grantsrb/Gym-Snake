@@ -32,6 +32,7 @@ class Grid():
         channels = 3
         self.grid = np.zeros((height, width, channels), dtype=np.uint8)
         self.grid[:,:,:] = self.SPACE_COLOR
+        self.open_space = grid_size[0]*grid_size[1]
 
     def check_death(self, head_coord):
         """
@@ -83,12 +84,13 @@ class Grid():
 
     def draw(self, coord, color):
         """
-        Colors a single space on the grid
+        Colors a single space on the grid. Use erase if creating an empty space on the grid.
 
         coord - x,y integer coordinates as a tuple, list, or ndarray
         color - [R,G,B] values as a tuple, list, or ndarray
         """
 
+        self.open_space -= 1
         x = int(coord[0]*self.unit_size)
         end_x = x+self.unit_size-self.unit_gap
         y = int(coord[1]*self.unit_size)
@@ -118,10 +120,11 @@ class Grid():
     def erase(self, coord):
         """
         Colors the entire coordinate with SPACE_COLOR to erase potential
-        connection lines
+        connection lines.
 
         coord - (x,y) as tuple, list, or ndarray
         """
+        self.open_space += 1
         x = int(coord[0]*self.unit_size)
         end_x = x+self.unit_size
         y = int(coord[1]*self.unit_size)
@@ -150,7 +153,7 @@ class Grid():
         end_y = y+self.unit_size
         self.grid[y:end_y, x:end_x, :] = self.SPACE_COLOR
 
-    def erase_snake(self, snake):
+    def erase_snake_body(self, snake):
         """
         Removes the argued snake's body and head from the grid.
 
@@ -174,12 +177,15 @@ class Grid():
         Draws a food on a random, open unit of the grid.
         """
 
+        if self.open_space < 1:
+            return False
         coord_not_found = True
         while(coord_not_found):
             coord = (np.random.randint(0,self.grid_size[0]), np.random.randint(0,self.grid_size[1]))
             if np.array_equal(self.color_of(coord), self.SPACE_COLOR):
                 coord_not_found = False
         self.draw(coord, self.FOOD_COLOR)
+        return True
 
     def off_grid(self, coord):
         """
