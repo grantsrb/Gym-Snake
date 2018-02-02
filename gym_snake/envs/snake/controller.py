@@ -45,14 +45,15 @@ class Controller():
         # Check for death of snake
         new_coord = snake.head
         if self.grid.check_death(new_coord):
-            self.grid.erase_snake(snake)
+            self.grid.erase_snake_body(snake)
             self.snakes[snake_idx] = None
             return -1
 
         # Check for reward
         if self.grid.food_space(new_coord):
             reward = 1
-            self.grid.new_food()
+            if self.grid.new_food():
+                return +1
         else:
             reward = 0
             empty_coord = snake.body.popleft()
@@ -91,7 +92,7 @@ class Controller():
             else:
                 rewards.append(0)
 
-        self.done = done
+        self.done = done or self.grid.open_space < 1
         if len(rewards) is 1:
             return self.grid.grid, rewards[0], done, {"snakes_left":snakes_left}
         else:
