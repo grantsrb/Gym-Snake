@@ -13,7 +13,7 @@ class Controller():
         assert snake_size < grid_size[1]//2
         assert unit_gap >= 0 and unit_gap < unit_size
 
-        self.done = False
+        self.snakes_remaining = n_snakes
         self.grid = Grid(grid_size, unit_size, unit_gap)
 
         self.snakes = []
@@ -27,42 +27,56 @@ class Controller():
         for i in range(n_foods):
             self.grid.new_food()
 
-    def action(self, direction, snake_idx=0):
+    def move_snake(self, direction, snake_idx):
         """
         Moves the specified snake according to the game's rules dependent on the direction.
-        Checks for food and death collisions.
+        Does not draw head and does not check for reward scenarios. See move_result for these
+        functionalities.
         """
 
         snake = self.snakes[snake_idx]
-        assert type(snake) != type(None)
+        if type(snake) == type(None):
+            return
 
         # Cover old head position with body
-        snake_neck = snake.head
-        self.grid.draw(snake_neck, self.grid.BODY_COLOR)
-        # Find next head position conditioned on direction
+        self.grid.cover(snake.head, self.grid.BODY_COLOR)
+        # Erase tail without popping so as to redraw if food eaten
+        self.grid.erase(snake.body[0])
+        # Find and set next head position conditioned on direction
         snake.action(direction)
 
+    def move_result(self, direction, snake_idx=0):
+        """
+        Checks for food and death collisions after moving snake. Draws head of snake if
+        no death scenarios.
+        """
+
+        snake = self.snakes[snake_idx]
+        if type(snake) == type(None):
+            return 0
+
         # Check for death of snake
-        new_coord = snake.head
-        if self.grid.check_death(new_coord):
+        if self.grid.check_death(snake.head):
+            snake.body.popleft() # Pop tail so as to prevent erasing twice
             self.grid.erase_snake_body(snake)
             self.snakes[snake_idx] = None
+            self.snakes_remaining -= 1
             return -1
 
         # Check for reward
-        if self.grid.food_space(new_coord):
+        if self.grid.food_space(snake.head):
             reward = 1
+            self.grid.draw(snake.body[0]) # Redraw tail
+            self.grid.cover(snake.head, snake.head_color) # Avoid miscount of grid.open_space
             if self.grid.new_food():
                 return +1
         else:
             reward = 0
             empty_coord = snake.body.popleft()
             self.grid.connect(empty_coord, snake.body[0], self.grid.SPACE_COLOR)
-            self.grid.erase(empty_coord)
+            self.grid.draw(snake.head, snake.head_color)
 
-        # Draw new head position
-        self.grid.draw(snake.head, snake.head_color)
-        self.grid.connect(snake_neck, snake.head, self.grid.BODY_COLOR)
+        self.grid.connect(snake.body[-1], snake.head, self.grid.BODY_COLOR)
 
         return reward
 
@@ -75,26 +89,23 @@ class Controller():
         """
 
         # Ensure no more play until reset
-        if self.done:
-            return self.grid.grid, [0]*len(directions), done, {"snakes_left":snakes_left}
+        if self.snakes_remaining < 1 or self.grid.open_space < 1:
+            if len(directions) is 1:
+                return self.grid.grid, 0, True, {"snakes_remaining":self.snakes_remaining}
+            else:
+                return self.grid.grid, [0]*len(directions), True, {"snakes_remaining":self.snakes_remaining}
 
-        done = True
         rewards = []
-        snakes_left = 0
 
         if type(directions) == type(int()):
             directions = [directions]
-            
-        for i, direction in enumerate(directions):
-            if type(self.snakes[i]) != type(None):
-                done = False
-                rewards.append(self.action(direction, i))
-                snakes_left += 1
-            else:
-                rewards.append(0)
 
-        self.done = done or self.grid.open_space < 1
+        for i, direction in enumerate(directions):
+            self.move_snake(direction,i)
+            rewards.append(self.move_result(direction, i))
+
+        done = self.snakes_remaining < 1 or self.grid.open_space < 1
         if len(rewards) is 1:
-            return self.grid.grid, rewards[0], done, {"snakes_left":snakes_left}
+            return self.grid.grid, rewards[0], done, {"snakes_remaining":snakes_remaining}
         else:
-            return self.grid.grid, rewards, done, {"snakes_left":snakes_left}
+            return self.grid.grid, rewards, done, {"snakes_remaining":snakes_remaining}
