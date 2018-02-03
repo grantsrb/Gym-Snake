@@ -64,19 +64,24 @@ No extra reward is given for victory snakes in plural play.
 Each of these options are member variables of the environment and will come into effect after the environment is reset.
 
 ![default](./imgs/default.png)
-Default setting for `snake-v0` play, 15x15 unit grid.
+
+Above is the default setting for `snake-v0` play, 15x15 unit grid.
 
 ![default](./imgs/default_plural.png)
-Default setting for `snake-plural-v0` play, 25x25 unit grid.
+
+Above is the default setting for `snake-plural-v0` play, 25x25 unit grid.
 
 ![default](./imgs/nogap.png)
-Result of setting `env.unit_gap` to 0.
+
+Above is `env.unit_gap` == 0 and a 30x30 grid.
 
 ![default](./imgs/widegap.png)
-Result of setting `env.unit_gap` to a large number.
+
+Above set `env.unit_gap` half the unit size with a 15x15 sized grid.
 
 ![default](./imgs/biggrid.png)
-Here's a really big grid with lots of food and small snakes.
+
+Above is a big grid with lots of food and small snakes.
 
 #### General Info
 The snake environment has three main interacting classes to construct the environment. The three are a Snake class, a Grid class, and a Controller class. Each holds information about the environment, and each can be accessed through the gym environment.
