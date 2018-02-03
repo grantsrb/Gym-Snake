@@ -26,7 +26,7 @@ class SnakeExtraHardEnv(gym.Env):
         return self.controller.step(action)
 
     def _reset(self):
-        self.controller = Controller(self.grid_size, self.unit_size, self.snake_size, self.n_snakes, self.n_foods)
+        self.controller = Controller(self.grid_size, self.unit_size, self.unit_gap, self.snake_size, self.n_snakes, self.n_foods)
         self.last_obs = self.controller.grid.grid
         return self.last_obs
 
@@ -40,4 +40,3 @@ class SnakeExtraHardEnv(gym.Env):
 
     def _seed(self, x):
         pass
-
