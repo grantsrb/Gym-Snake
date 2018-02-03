@@ -82,20 +82,38 @@ class Grid():
             self.grid[min_y:max_y, coord1[0]*self.unit_size, :] = color
             self.grid[min_y:max_y, coord1[0]*self.unit_size+self.unit_size-self.unit_gap-1, :] = color
 
-    def draw(self, coord, color):
+    def cover(self, coord, color):
         """
         Colors a single space on the grid. Use erase if creating an empty space on the grid.
+        This function is used like draw but without affecting the open_space count.
 
         coord - x,y integer coordinates as a tuple, list, or ndarray
         color - [R,G,B] values as a tuple, list, or ndarray
         """
 
-        self.open_space -= 1
+        if self.off_grid(coord):
+            return False
         x = int(coord[0]*self.unit_size)
         end_x = x+self.unit_size-self.unit_gap
         y = int(coord[1]*self.unit_size)
         end_y = y+self.unit_size-self.unit_gap
         self.grid[y:end_y, x:end_x, :] = np.asarray(color, dtype=np.uint8)
+        return True
+
+    def draw(self, coord, color):
+        """
+        Colors a single space on the grid. Use erase if creating an empty space on the grid.
+        Affects the open_space count.
+
+        coord - x,y integer coordinates as a tuple, list, or ndarray
+        color - [R,G,B] values as a tuple, list, or ndarray
+        """
+
+        if self.cover(coord, color):
+            self.open_space -= 1
+            return True
+        else:
+            return False
 
 
     def draw_snake(self, snake, head_color=HEAD_COLOR):
@@ -124,12 +142,15 @@ class Grid():
 
         coord - (x,y) as tuple, list, or ndarray
         """
+        if self.off_grid(coord):
+            return False
         self.open_space += 1
         x = int(coord[0]*self.unit_size)
         end_x = x+self.unit_size
         y = int(coord[1]*self.unit_size)
         end_y = y+self.unit_size
         self.grid[y:end_y, x:end_x, :] = self.SPACE_COLOR
+        return True
 
     def erase_connections(self, coord):
         """
@@ -139,6 +160,8 @@ class Grid():
         coord - (x,y) as tuple, list, or ndarray
         """
 
+        if self.off_grid(coord):
+            return False
         # Erase Horizontal Row Below Coord
         x = int(coord[0]*self.unit_size)
         end_x = x+self.unit_size
@@ -152,6 +175,8 @@ class Grid():
         y = int(coord[1]*self.unit_size)
         end_y = y+self.unit_size
         self.grid[y:end_y, x:end_x, :] = self.SPACE_COLOR
+
+        return True
 
     def erase_snake_body(self, snake):
         """
