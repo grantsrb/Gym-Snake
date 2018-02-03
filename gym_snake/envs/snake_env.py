@@ -23,11 +23,13 @@ class SnakeEnv(gym.Env):
         self.action_space = [0,1,2,3]
 
     def _step(self, action):
-        return self.controller.step(action)
+        self.last_obs, rewards, done, info = self.controller.step(action)
+        return self.last_obs, rewards, done, info
 
     def _reset(self):
         self.controller = Controller(self.grid_size, self.unit_size, self.unit_gap, self.snake_size, self.n_snakes, self.n_foods)
-        return self.controller.grid.grid
+        self.last_obs = self.controller.grid.grid
+        return self.last_obs
 
     def _render(self, mode='human', close=False):
         if self.viewer is None:
