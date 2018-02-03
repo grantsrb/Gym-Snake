@@ -46,8 +46,11 @@ Use `gym.make('snake-plural-v0')` to make a new snake environment with the follo
 You're probably familiar with the game of snake. This is an OpenAI gym implementation of the game with multi snake and multi food options.
 
 #### Rewards
-A +1 reward is returned when a snake eats a food
-A -1 reward is returned when a snake dies
+A +1 reward is returned when a snake eats a food.
+
+A -1 reward is returned when a snake dies.
+
+No extra reward is given for victory snakes in plural play.
 
 #### Game Options
 
@@ -58,6 +61,24 @@ A -1 reward is returned when a snake dies
 - _n_snakes_ - Number of individual snakes on grid
 - _n_foods_ - Number of food units (the stuff that makes the snakes grow) on the grid at any given time.
 
+Each of these options are member variables of the environment and will come into effect after the environment is reset.
+
+![default](./imgs/default.png)
+Default setting for `snake-v0` play, 15x15 unit grid.
+
+![default](./imgs/default_plural.png)
+Default setting for `snake-plural-v0` play, 25x25 unit grid.
+
+![default](./imgs/nogap.png)
+Result of setting `env.unit_gap` to 0.
+
+![default](./imgs/widegap.png)
+Result of setting `env.unit_gap` to a large number.
+
+![default](./imgs/biggrid.png)
+Here's a really big grid with lots of food and small snakes.
+
+#### General Info
 The snake environment has three main interacting classes to construct the environment. The three are a Snake class, a Grid class, and a Controller class. Each holds information about the environment, and each can be accessed through the gym environment.
 
     import gym
@@ -77,6 +98,9 @@ The snake environment has three main interacting classes to construct the enviro
     # Snake(s)
     snakes_array = game_controller.snakes
     snake_object1 = snakes[0]
+
+#### Using Multiple Snakes
+The only differences with using multiple snakes is that at each step, you pass an array of actions corresponding to the action of each snake. The return is an array of rewards corresponding each snake. The reward returned upon a snakes' death is -1, each subsequent step after this, however, is a reward of 0. The contents of the action array are ignored at a dead snake's index, the action array must, however, continue to have an index for each snake that originally started out the game.
 
 #### Coordinates
 The units of the game are made to take up multiple pixels within the grid. Each unit has an x,y coordinate associated with it where (0,0) represents the uppermost left unit of the grid and (`grid_object.grid_size[0]`, `grid_object.grid_size[1]`) denotes the lowermost right unit of the grid. Positional information about snake food and snakes' bodies is encoded using this coordinate system.

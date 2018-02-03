@@ -84,6 +84,7 @@ class Controller():
 
         if type(directions) == type(int()):
             directions = [directions]
+            
         for i, direction in enumerate(directions):
             if type(self.snakes[i]) != type(None):
                 done = False
