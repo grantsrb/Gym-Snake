@@ -65,11 +65,11 @@ class Controller():
 
         # Check for reward
         if self.grid.food_space(snake.head):
-            reward = 1
             self.grid.draw(snake.body[0], self.grid.BODY_COLOR) # Redraw tail
+            self.grid.connect(snake.body[0], snake.body[1], self.grid.BODY_COLOR)
             self.grid.cover(snake.head, snake.head_color) # Avoid miscount of grid.open_space
             if self.grid.new_food():
-                return +1
+                reward = 1
         else:
             reward = 0
             empty_coord = snake.body.popleft()
