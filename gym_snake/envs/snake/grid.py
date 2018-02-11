@@ -200,6 +200,7 @@ class Grid():
     def new_food(self):
         """
         Draws a food on a random, open unit of the grid.
+        Returns true if space left. Otherwise returns false.
         """
 
         if self.open_space < 1:
