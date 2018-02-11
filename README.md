@@ -5,7 +5,9 @@
 ## Description
 gym-snake is a multi-agent implementation of the classic game [snake](https://www.youtube.com/watch?v=wDbTP0B94AM) that is made as an OpenAI gym environment.
 
-Currently only a single file is available.
+The two environments this repo offers are snake-v0 and snake-plural-v0. snake-v0 is the classic snake game. See the section on SnakeEnv for more details. snake-plural-v0 is a version of snake with multiple snakes and multiple snake foods on the map. See the section on SnakeExtraHardEnv for more details. 
+
+Many of the aspects of the game can be changed for both environments. See the Game Details section for specifics.
 
 ## Dependencies
 - pip
