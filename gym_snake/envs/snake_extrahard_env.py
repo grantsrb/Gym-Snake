@@ -2,7 +2,7 @@ import os, subprocess, time, signal
 import gym
 from gym import error, spaces, utils
 from gym.utils import seeding
-from gym_snake.envs.snake import Controller
+from gym_snake.envs.snake import Controller, Discrete
 
 try:
     import matplotlib.pyplot as plt
@@ -20,7 +20,7 @@ class SnakeExtraHardEnv(gym.Env):
         self.n_snakes = n_snakes
         self.n_foods = n_foods
         self.viewer = None
-        self.action_space = [0,1,2,3]
+        self.action_space = Discrete(4)
         self.last_obs = None
 
     def _step(self, action):
