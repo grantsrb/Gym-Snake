@@ -116,7 +116,9 @@ The snake environment has three main interacting classes to construct the enviro
     snake_object1 = snakes[0]
 
 #### Using Multiple Snakes
-The only differences with using multiple snakes is that at each step, you pass an array of actions corresponding to the action of each snake. The return is an array of rewards corresponding each snake. The reward returned upon a snakes' death is -1, each subsequent step after this, however, is a reward of 0. The contents of the action array are ignored at a dead snake's index, the action array must, however, continue to have an index for each snake that originally started out the game.
+Snakes can be distinguished by the G value of their `head_color` attribute. Each head color consists of [R=255, G=uniqueNonZeroValue, B=0]. 
+
+When using multiple snakes, at each step, you pass an array of actions corresponding to the action of each snake. The return is an array of rewards corresponding each snake. The reward returned upon a snakes' death is -1, each subsequent step after this, however, is a reward of 0. The contents of the action array are ignored at a dead snake's index, the action array must, however, continue to have an index for each snake that originally started out the game.
 
 #### Coordinates
 The units of the game are made to take up multiple pixels within the grid. Each unit has an x,y coordinate associated with it where (0,0) represents the uppermost left unit of the grid and (`grid_object.grid_size[0]`, `grid_object.grid_size[1]`) denotes the lowermost right unit of the grid. Positional information about snake food and snakes' bodies is encoded using this coordinate system.
