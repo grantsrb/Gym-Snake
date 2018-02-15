@@ -10,6 +10,7 @@ class Controller():
     def __init__(self, grid_size=[30,30], unit_size=10, unit_gap=1, snake_size=3, n_snakes=1, n_foods=1):
 
         assert n_snakes < grid_size[0]//3
+        assert n_snakes < 25
         assert snake_size < grid_size[1]//2
         assert unit_gap >= 0 and unit_gap < unit_size
 
@@ -21,7 +22,7 @@ class Controller():
         for i in range(1,n_snakes+1):
             start_coord = [i*grid_size[0]//(n_snakes+1), snake_size+1]
             self.snakes.append(Snake(start_coord, snake_size))
-            color = [self.grid.HEAD_COLOR[0], (i-1)*255//n_snakes, 0]
+            color = [self.grid.HEAD_COLOR[0], i*10, 0]
             self.snakes[-1].head_color = color
             self.grid.draw_snake(self.snakes[-1], color)
             self.dead_snakes.append(None)
