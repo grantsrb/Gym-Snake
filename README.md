@@ -63,7 +63,13 @@ No extra reward is given for victory snakes in plural play.
 - _n_snakes_ - Number of individual snakes on grid
 - _n_foods_ - Number of food units (the stuff that makes the snakes grow) on the grid at any given time.
 
-Each of these options are member variables of the environment and will come into effect after the environment is reset.
+Each of these options are member variables of the environment and will come into effect after the environment is reset. For example, if you wanted to use 5 food tokens in the regular version, you can be set the number of food tokens using the following code:
+
+    env = gym.snake('snake-v0')
+    env.n_foods = 5
+    observation = env.reset()
+
+This will create a vanilla snake environment with 5 food tokens on the map. Here are some examples with of environment settings with the corresponding initial observation.
 
 ![default](./imgs/default.png)
 
