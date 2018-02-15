@@ -69,27 +69,30 @@ Each of these options are member variables of the environment and will come into
     env.n_foods = 5
     observation = env.reset()
 
-This will create a vanilla snake environment with 5 food tokens on the map. Here are some examples with of environment settings with the corresponding initial observation.
+This will create a vanilla snake environment with 5 food tokens on the map.
+
+
+#### Environment Parameter Examples
+Below is the default setting for `snake-v0` play, 15x15 unit grid.
 
 ![default](./imgs/default.png)
 
-Above is the default setting for `snake-v0` play, 15x15 unit grid.
+
+Below is the default setting for `snake-plural-v0` play, 25x25 unit grid.
 
 ![default](./imgs/default_plural.png)
 
-Above is the default setting for `snake-plural-v0` play, 25x25 unit grid.
+Below is `env.unit_gap` == 0 and a 30x30 grid.
 
 ![default](./imgs/nogap.png)
 
-Above is `env.unit_gap` == 0 and a 30x30 grid.
+Below set `env.unit_gap` half the unit size with a 15x15 sized grid.
 
 ![default](./imgs/widegap.png)
 
-Above set `env.unit_gap` half the unit size with a 15x15 sized grid.
+Below is a big grid with lots of food and small snakes.
 
 ![default](./imgs/biggrid.png)
-
-Above is a big grid with lots of food and small snakes.
 
 #### General Info
 The snake environment has three main interacting classes to construct the environment. The three are a Snake class, a Grid class, and a Controller class. Each holds information about the environment, and each can be accessed through the gym environment.
