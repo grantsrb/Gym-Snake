@@ -144,7 +144,7 @@ This class holds all pertinent information about the grid that the snakes move o
     # Color constants give information about the colors of the grid
     # Each are ndarrays with dtype uint8
     grid_object.BODY_COLOR # [1,0,0] Color of snake body units
-    grid_object.HEAD_COLOR # [255, 0, 0] Color of snake head units. The G value [R,G,B] varies with multiple snakes.
+    grid_object.HEAD_COLOR # [255, (i+1)*10, 0] Color of snake head units. i is the index of the snake.
     grid_object.FOOD_COLOR # [0,0,255] Color of food units
     grid_object.SPACE_COLOR # [0,255,0] Color of blank space
 
