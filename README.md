@@ -116,7 +116,7 @@ The snake environment has three main interacting classes to construct the enviro
     snake_object1 = snakes[0]
 
 #### Using Multiple Snakes
-Snakes can be distinguished by the G value of their `head_color` attribute. Each head color consists of [R=255, G=uniqueNonZeroValue, B=0]. 
+Snakes can be distinguished by the Green value of their `head_color` attribute. Each head color consists of [Red=255, Green=uniqueNonZeroValue, Blue=0]. For each snake instantiated, the head color will corespond to its index within the controller's snake array. The head value will take on [255, (i+1)*10, 0] where i is the index of the snake.
 
 When using multiple snakes, at each step, you pass an array of actions corresponding to the action of each snake. The return is an array of rewards corresponding each snake. The reward returned upon a snakes' death is -1, each subsequent step after this, however, is a reward of 0. The contents of the action array are ignored at a dead snake's index, the action array must, however, continue to have an index for each snake that originally started out the game.
 
