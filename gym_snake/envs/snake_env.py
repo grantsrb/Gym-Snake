@@ -22,16 +22,16 @@ class SnakeEnv(gym.Env):
         self.viewer = None
         self.action_space = Discrete(4)
 
-    def _step(self, action):
+    def step(self, action):
         self.last_obs, rewards, done, info = self.controller.step(action)
         return self.last_obs, rewards, done, info
 
-    def _reset(self):
+    def reset(self):
         self.controller = Controller(self.grid_size, self.unit_size, self.unit_gap, self.snake_size, self.n_snakes, self.n_foods)
         self.last_obs = self.controller.grid.grid
         return self.last_obs
 
-    def _render(self, mode='human', close=False):
+    def render(self, mode='human', close=False):
         if self.viewer is None:
             self.viewer = plt.imshow(self.last_obs)
         else:
@@ -39,5 +39,5 @@ class SnakeEnv(gym.Env):
         plt.pause(0.1)
         plt.draw()
 
-    def _seed(self, x):
+    def seed(self, x):
         pass
