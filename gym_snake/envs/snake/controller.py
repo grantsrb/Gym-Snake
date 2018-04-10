@@ -27,8 +27,9 @@ class Controller():
             self.grid.draw_snake(self.snakes[-1], color)
             self.dead_snakes.append(None)
 
-        for i in range(n_foods):
-            self.grid.new_food()
+        for i in reversed(range(2,n_foods+2)):
+            start_coord = [i*grid_size[0]//(n_foods+2), grid_size[1]-5]
+            self.grid.place_food(start_coord)
 
     def move_snake(self, direction, snake_idx):
         """

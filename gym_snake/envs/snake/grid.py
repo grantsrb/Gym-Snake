@@ -197,6 +197,19 @@ class Grid():
 
         return np.array_equal(self.color_of(coord), self.FOOD_COLOR)
 
+    def place_food(self, coord):
+        """
+        Draws a food at the coord. Ensures the same placement for
+        each food at the beginning of a new episode. This is useful for
+        experimentation with curiosity driven behaviors.
+
+        num - the integer denoting the 
+        """
+        if self.open_space < 1 or not np.array_equal(self.color_of(coord), self.SPACE_COLOR):
+            return False
+        self.draw(coord, self.FOOD_COLOR)
+        return True
+
     def new_food(self):
         """
         Draws a food on a random, open unit of the grid.
