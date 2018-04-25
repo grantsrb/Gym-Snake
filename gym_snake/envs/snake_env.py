@@ -12,7 +12,7 @@ except ImportError as e:
 class SnakeEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, grid_size=[15,15], unit_size=10, unit_gap=1, snake_size=3, n_snakes=1, n_foods=1):
+    def __init__(self, grid_size=[15,15], unit_size=10, unit_gap=1, snake_size=3, n_snakes=1, n_foods=1, random_init=True):
         self.grid_size = grid_size
         self.unit_size = unit_size
         self.unit_gap = unit_gap
@@ -21,17 +21,18 @@ class SnakeEnv(gym.Env):
         self.n_foods = n_foods
         self.viewer = None
         self.action_space = Discrete(4)
+        self.random_init = random_init
 
-    def _step(self, action):
+    def step(self, action):
         self.last_obs, rewards, done, info = self.controller.step(action)
         return self.last_obs, rewards, done, info
 
-    def _reset(self):
-        self.controller = Controller(self.grid_size, self.unit_size, self.unit_gap, self.snake_size, self.n_snakes, self.n_foods)
+    def reset(self):
+        self.controller = Controller(self.grid_size, self.unit_size, self.unit_gap, self.snake_size, self.n_snakes, self.n_foods, random_init=self.random_init)
         self.last_obs = self.controller.grid.grid
         return self.last_obs
 
-    def _render(self, mode='human', close=False):
+    def render(self, mode='human', close=False):
         if self.viewer is None:
             self.viewer = plt.imshow(self.last_obs)
         else:
@@ -39,5 +40,5 @@ class SnakeEnv(gym.Env):
         plt.pause(0.1)
         plt.draw()
 
-    def _seed(self, x):
+    def seed(self, x):
         pass

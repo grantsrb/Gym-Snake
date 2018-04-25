@@ -60,9 +60,9 @@ class Snake():
         last piece of the body if no food is eaten on this step.
 
         The direction can be any integer value, but will be collapsed
-        to 1, 2, 3, or 4 corresponding to up, right, down, left respectively.
+        to 0, 1, 2, or 3 corresponding to up, right, down, left respectively.
 
-        direction - integer from 1-4 inclusive.
+        direction - integer from 0-3 inclusive.
             0: up
             1: right
             2: down

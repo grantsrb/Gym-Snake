@@ -62,6 +62,7 @@ No extra reward is given for victory snakes in plural play.
 - _snake_size_ - Number of body units for each snake at start of game
 - _n_snakes_ - Number of individual snakes on grid
 - _n_foods_ - Number of food units (the stuff that makes the snakes grow) on the grid at any given time.
+- _random_init_ - If set to false, the food units initialize to the same location at each reset.
 
 Each of these options are member variables of the environment and will come into effect after the environment is reset. For example, if you wanted to use 5 food tokens in the regular version, you can be set the number of food tokens using the following code:
 
