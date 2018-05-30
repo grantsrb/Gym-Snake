@@ -12,12 +12,12 @@ class Grid():
     It is also assumed that HEAD_COLOR has a 255 value as its 0 channel.
     """
 
-    BODY_COLOR = np.array([1,0,0], dtype=np.uint8)
+    BODY_COLOR = np.array([1, 0, 0], dtype=np.uint8)
     HEAD_COLOR = np.array([255, 0, 0], dtype=np.uint8)
-    FOOD_COLOR = np.array([0,0,255], dtype=np.uint8)
-    SPACE_COLOR = np.array([0,255,0], dtype=np.uint8)
+    FOOD_COLOR = np.array([0, 0, 255], dtype=np.uint8)
+    SPACE_COLOR = np.array([0, 255, 0], dtype=np.uint8)
 
-    def __init__(self, grid_size=[30,30], unit_size=10, unit_gap=1):
+    def __init__(self, grid_size=[30, 30], unit_size=10, unit_gap=1):
         """
         grid_size - tuple, list, or ndarray specifying number of atomic units in
                     both the x and y direction
@@ -31,8 +31,9 @@ class Grid():
         width = self.grid_size[0]*self.unit_size
         channels = 3
         self.grid = np.zeros((height, width, channels), dtype=np.uint8)
-        self.grid[:,:,:] = self.SPACE_COLOR
+        self.grid[:, :, :] = self.SPACE_COLOR
         self.open_space = grid_size[0]*grid_size[1]
+        self.food_coord = None
 
     def check_death(self, head_coord):
         """
@@ -208,6 +209,7 @@ class Grid():
         if self.open_space < 1 or not np.array_equal(self.color_of(coord), self.SPACE_COLOR):
             return False
         self.draw(coord, self.FOOD_COLOR)
+        self.food_coord = coord
         return True
 
     def new_food(self):
@@ -223,6 +225,7 @@ class Grid():
             coord = (np.random.randint(0,self.grid_size[0]), np.random.randint(0,self.grid_size[1]))
             if np.array_equal(self.color_of(coord), self.SPACE_COLOR):
                 coord_not_found = False
+        self.food_coord = coord
         self.draw(coord, self.FOOD_COLOR)
         return True
 
