@@ -38,11 +38,11 @@ class Snake():
         direction - integer from 1-4 inclusive.
             0: up
             1: right
-            2: down
+            2: downç
             3: left
         """
 
-        assert direction < 4 and direction >= 0
+        assert 4 > direction >= 0
 
         if direction == self.UP:
             return np.asarray([coord[0], coord[1]-1]).astype(np.int)

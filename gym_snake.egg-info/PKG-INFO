@@ -1,10 +1,10 @@
-Metadata-Version: 1.0
+Metadata-Version: 1.2
 Name: gym-snake
 Version: 0.0.1
 Summary: UNKNOWN
 Home-page: UNKNOWN
 Author: Satchel Grant
-Author-email: UNKNOWN
 License: UNKNOWN
 Description: UNKNOWN
 Platform: UNKNOWN
+Requires-Python: >=3
