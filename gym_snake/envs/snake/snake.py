@@ -38,7 +38,7 @@ class Snake():
         direction - integer from 1-4 inclusive.
             0: up
             1: right
-            2: down
+            2: downç
             3: left
         """
 

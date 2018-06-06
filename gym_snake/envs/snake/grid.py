@@ -220,8 +220,8 @@ class Grid():
         if self.open_space < 1:
             return False
         coord_not_found = True
-        while(coord_not_found):
-            coord = (np.random.randint(0,self.grid_size[0]), np.random.randint(0,self.grid_size[1]))
+        while coord_not_found :
+            coord = (np.random.randint(0, self.grid_size[0]), np.random.randint(0, self.grid_size[1]))
             if np.array_equal(self.color_of(coord), self.SPACE_COLOR):
                 coord_not_found = False
         self.food_coord = coord
@@ -235,7 +235,7 @@ class Grid():
         coord - x,y integer coordinates as a tuple, list, or ndarray
         """
 
-        return coord[0]<0 or coord[0]>=self.grid_size[0] or coord[1]<0 or coord[1]>=self.grid_size[1]
+        return coord[0]<0 or coord[0] >= self.grid_size[0] or coord[1]<0 or coord[1] >= self.grid_size[1]
 
     def snake_space(self, coord):
         """

@@ -7,7 +7,7 @@ class Controller:
     This class combines the Snake, Food, and Grid classes to handle the game logic.
     """
 
-    def __init__(self, grid_size=[30, 30], unit_size=10, unit_gap=1, snake_size=3, n_foods=1, random_init=True):
+    def __init__(self, grid_size=[30, 30], unit_size=10, unit_gap=1, snake_size=3, random_init=True):
 
         assert snake_size < grid_size[1]//2
         assert 0 <= unit_gap < unit_size
@@ -22,12 +22,10 @@ class Controller:
         self.grid.draw_snake(self.snake, color)
 
         if not random_init:
-            for i in range(2, n_foods+2):
-                start_coord = [i*grid_size[0]//(n_foods+3), grid_size[1]-5]
-                self.grid.place_food(start_coord)
+            start_coord = [grid_size[0]//2, grid_size[1]-5]
+            self.grid.place_food(start_coord)
         else:
-            for i in range(n_foods):
-                self.grid.new_food()
+            self.grid.new_food()
 
     def move_snake(self, direction):
         """
@@ -37,7 +35,7 @@ class Controller:
         """
 
         snake = self.snake
-        if isinstance(snake, None):
+        if snake is None:
             return
 
         # Cover old head position with body
@@ -54,7 +52,7 @@ class Controller:
         """
 
         snake = self.snake
-        if isinstance(snake, None):
+        if snake is None:
             return 0
 
         # Check for death of snake
@@ -88,6 +86,18 @@ class Controller:
         self.grid.erase(self.dead_snake.head)
         self.grid.erase_snake_body(self.dead_snake)
         self.dead_snake = None
+
+    def get_state(self):
+        """
+        Creates a state from game parameters
+        """
+        snake = self.snake
+        if snake is None:
+            return None
+        head = snake.head
+        body = snake.body
+        food = self.grid.food_coord
+        return head, body, food
 
     def step(self, direction):
         """
