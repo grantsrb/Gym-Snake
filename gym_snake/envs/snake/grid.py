@@ -116,7 +116,6 @@ class Grid():
         else:
             return False
 
-
     def draw_snake(self, snake, head_color=HEAD_COLOR):
         """
         Draws a snake with the given head color.

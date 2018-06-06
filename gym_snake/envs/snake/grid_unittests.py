@@ -3,6 +3,7 @@ from grid import Grid
 from snake import Snake
 import numpy as np
 
+
 class GridTests(unittest.TestCase):
 
     grid_size = [30,30]
@@ -10,9 +11,9 @@ class GridTests(unittest.TestCase):
 
     def test_grid_Initialization(self):
         grid = Grid(self.grid_size, self.unit_size)
-        expected_size = [300,300,3]
+        expected_size = [300, 300, 3]
         expected_grid = np.zeros(expected_size, dtype=np.uint8)
-        expected_grid[:,:,1] = 255
+        expected_grid[:, :, 1] = 255
         self.assertTrue(np.array_equal(grid.grid, expected_grid))
 
     def test_constant_Initialization(self):
@@ -22,10 +23,10 @@ class GridTests(unittest.TestCase):
 
     def test_color_Initialization(self):
         grid = Grid(self.grid_size, self.unit_size)
-        expected_color = np.array([0,255,0], dtype=np.uint8)
+        expected_color = np.array([0, 255, 0], dtype=np.uint8)
         for i in range(grid.grid.shape[0]):
             for j in range(grid.grid.shape[1]):
-                self.assertTrue(np.array_equal(grid.grid[i,j,:],expected_color))
+                self.assertTrue(np.array_equal(grid.grid[i, j, :], expected_color))
 
     def test_color_of_Color(self):
         grid = Grid(self.grid_size, self.unit_size)
