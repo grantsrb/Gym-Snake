@@ -114,7 +114,7 @@ The snake environment has three main interacting classes to construct the enviro
 
     # Snake(s)
     snakes_array = game_controller.snakes
-    snake_object1 = snakes[0]
+    snake_object1 = snakes_array[0]
 
 #### Using Multiple Snakes
 Snakes can be distinguished by the Green value of their `head_color` attribute. Each head color consists of [Red=255, Green=uniqueNonZeroValue, Blue=0]. For each snake instantiated, the head color will corespond to its index within the controller's snake array. The head value will take on [255, (i+1)*10, 0] where i is the index of the snake.
