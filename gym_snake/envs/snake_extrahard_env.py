@@ -33,13 +33,17 @@ class SnakeExtraHardEnv(gym.Env):
         self.last_obs = self.controller.grid.grid
         return self.last_obs
 
-    def render(self, mode='human', close=False):
+    def render(self, mode='human', close=False, frame_speed=.1):
         if self.viewer is None:
-            self.viewer = plt.imshow(self.last_obs)
+            self.fig = plt.figure()
+            self.viewer = self.fig.add_subplot(111)
+            plt.ion()
+            self.fig.show()
         else:
-            self.viewer.set_data(self.last_obs)
-        plt.pause(0.1)
-        plt.draw()
+            self.viewer.clear()
+            self.viewer.imshow(self.last_obs)
+            plt.pause(frame_speed)
+        self.fig.canvas.draw()
 
     def seed(self, x):
         pass
