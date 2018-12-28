@@ -20,6 +20,13 @@ Many of the aspects of the game can be changed for both environments. See the Ga
 2. Navigate to the cloned repository
 3. Run command `$ pip install -e ./`
 
+## Rendering
+If you are experiencing trouble using the `render()` function while using jupyter notebook, insert:
+
+    %matplotlib notebook
+
+before calling `render()`.
+
 ## Using gym-snake
 After installation, you can use gym-snake by making one of two gym environments.
 
@@ -161,3 +168,5 @@ The Controller holds a grid object and an array of snakes that move on the grid.
     # Member variables
     game_controller.grid # An instance of the grid class for the game
     self.snakes # An array of snake objects that are on the board. If a snake dies, it is erased and it becomes None.
+
+
