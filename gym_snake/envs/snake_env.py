@@ -1,5 +1,6 @@
 import os, subprocess, time, signal
 import gym
+import numpy as np
 from gym import error, spaces, utils
 from gym.utils import seeding
 from gym_snake.envs.snake import Controller, Discrete
@@ -23,7 +24,7 @@ class SnakeEnv(gym.Env):
         self.viewer = None
         self.action_space = Discrete(4)
         self.random_init = random_init
-        self.np_random = None
+        self.np_random = np.random
 
     def step(self, action):
         self.last_obs, rewards, done, info = self.controller.step(action)
