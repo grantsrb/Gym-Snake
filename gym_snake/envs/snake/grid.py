@@ -210,7 +210,7 @@ class Grid():
         self.draw(coord, self.FOOD_COLOR)
         return True
 
-    def new_food(self):
+    def new_food(self, np_random):
         """
         Draws a food on a random, open unit of the grid.
         Returns true if space left. Otherwise returns false.
@@ -220,7 +220,7 @@ class Grid():
             return False
         coord_not_found = True
         while(coord_not_found):
-            coord = (np.random.randint(0,self.grid_size[0]), np.random.randint(0,self.grid_size[1]))
+            coord = (np_random.randint(0,self.grid_size[0]), np_random.randint(0,self.grid_size[1]))
             if np.array_equal(self.color_of(coord), self.SPACE_COLOR):
                 coord_not_found = False
         self.draw(coord, self.FOOD_COLOR)

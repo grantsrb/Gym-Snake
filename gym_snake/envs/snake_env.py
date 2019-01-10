@@ -23,13 +23,14 @@ class SnakeEnv(gym.Env):
         self.viewer = None
         self.action_space = Discrete(4)
         self.random_init = random_init
+        self.np_random = None
 
     def step(self, action):
         self.last_obs, rewards, done, info = self.controller.step(action)
         return self.last_obs, rewards, done, info
 
     def reset(self):
-        self.controller = Controller(self.grid_size, self.unit_size, self.unit_gap, self.snake_size, self.n_snakes, self.n_foods, random_init=self.random_init)
+        self.controller = Controller(self.grid_size, self.unit_size, self.unit_gap, self.snake_size, self.n_snakes, self.n_foods, random_init=self.random_init, np_random=self.np_random)
         self.last_obs = self.controller.grid.grid.copy()
         return self.last_obs
 
@@ -45,5 +46,6 @@ class SnakeEnv(gym.Env):
             plt.pause(frame_speed)
         self.fig.canvas.draw()
 
-    def seed(self, x):
-        pass
+    def seed(self, seed=None):
+        self.np_random, seed = seeding.np_random(seed)
+        return [seed]
