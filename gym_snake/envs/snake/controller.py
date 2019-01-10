@@ -120,10 +120,10 @@ class Controller():
             directions = [directions]
 
         for i, direction in enumerate(directions):
-            if self.snakes[i] is None and self.dead_snakes[i] is not None:
-                self.kill_snake(i)
             self.move_snake(direction,i)
             rewards.append(self.move_result(direction, i))
+            if self.snakes[i] is None and self.dead_snakes[i] is not None:
+                self.kill_snake(i)
 
         done = self.snakes_remaining < 1 or self.grid.open_space < 1
         if len(rewards) is 1:
