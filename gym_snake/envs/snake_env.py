@@ -39,10 +39,9 @@ class SnakeEnv(gym.Env):
             self.viewer = self.fig.add_subplot(111)
             plt.ion()
             self.fig.show()
-        else:
-            self.viewer.clear()
-            self.viewer.imshow(self.last_obs)
-            plt.pause(frame_speed)
+        self.viewer.clear()
+        self.viewer.imshow(self.last_obs)
+        plt.pause(frame_speed)
         self.fig.canvas.draw()
 
     def seed(self, x):
