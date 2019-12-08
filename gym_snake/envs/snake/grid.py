@@ -11,11 +11,34 @@ class Grid():
     Note that it is assumed spaces that can kill a snake have a non-zero value as their 0 channel.
     It is also assumed that HEAD_COLOR has a 255 value as its 0 channel.
     """
+    BC = []
+    HC = []
+    FC = []
+    SC = []
 
-    BODY_COLOR = np.array([1,0,0], dtype=np.uint8)
-    HEAD_COLOR = np.array([255, 0, 0], dtype=np.uint8)
-    FOOD_COLOR = np.array([0,0,255], dtype=np.uint8)
-    SPACE_COLOR = np.array([0,255,0], dtype=np.uint8)
+    print("Input in RGB [x,y,z] BODY COLOR:")
+    for i in range(0, 3):
+        rgb = int(input())
+        BC.append(rgb)
+
+    print("Input in RGB [x,y,z] HEAD COLOR:")
+    for j in range(0, 3):
+        rgb1 = int(input())
+        HC.append(rgb1)
+
+    print("Input in RGB [x,y,z] FOOD COLOR:")
+    for k in range(0, 3):
+        rgb2 = int(input())
+        FC.append(rgb2)
+    print("Input in RGB [x,y,z] SPACE COLOR:")
+    for l in range(0, 3):
+        rgb3 = int(input())
+        SC.append(rgb3)
+
+    BODY_COLOR = np.array(BC, dtype=np.uint8)
+    HEAD_COLOR = np.array(HC, dtype=np.uint8)
+    FOOD_COLOR = np.array(FC, dtype=np.uint8)
+    SPACE_COLOR = np.array(SC, dtype=np.uint8)
 
     def __init__(self, grid_size=[30,30], unit_size=10, unit_gap=1):
         """
@@ -203,7 +226,7 @@ class Grid():
         each food at the beginning of a new episode. This is useful for
         experimentation with curiosity driven behaviors.
 
-        num - the integer denoting the 
+        num - the integer denoting the
         """
         if self.open_space < 1 or not np.array_equal(self.color_of(coord), self.SPACE_COLOR):
             return False
