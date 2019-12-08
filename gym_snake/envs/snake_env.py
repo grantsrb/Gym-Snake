@@ -4,6 +4,7 @@ from gym import error, spaces, utils
 from gym.utils import seeding
 from gym_snake.envs.snake import Controller, Discrete
 
+
 try:
     import matplotlib.pyplot as plt
     import matplotlib
@@ -13,7 +14,17 @@ except ImportError as e:
 class SnakeEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, grid_size=[15,15], unit_size=10, unit_gap=1, snake_size=3, n_snakes=1, n_foods=1, random_init=True):
+    print("Speed of snake (max = 0.01):")
+    sp = int(input())
+
+    def __init__(self,
+                grid_size=[15,15],
+                unit_size=10,
+                unit_gap=1,
+                snake_size=3,
+                n_snakes=1,
+                n_foods=1,
+                random_init=True,):
         self.grid_size = grid_size
         self.unit_size = unit_size
         self.unit_gap = unit_gap
@@ -33,7 +44,7 @@ class SnakeEnv(gym.Env):
         self.last_obs = self.controller.grid.grid.copy()
         return self.last_obs
 
-    def render(self, mode='human', close=False, frame_speed=.1):
+    def render(self, mode='human', close=False, frame_speed=sp):
         if self.viewer is None:
             self.fig = plt.figure()
             self.viewer = self.fig.add_subplot(111)
