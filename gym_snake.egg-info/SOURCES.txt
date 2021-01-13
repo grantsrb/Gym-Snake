@@ -1,3 +1,5 @@
+README.md
+setup.py
 gym_snake.egg-info/PKG-INFO
 gym_snake.egg-info/SOURCES.txt
 gym_snake.egg-info/dependency_links.txt
