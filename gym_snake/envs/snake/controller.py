@@ -7,13 +7,14 @@ class Controller():
     This class combines the Snake, Food, and Grid classes to handle the game logic.
     """
 
-    def __init__(self, grid_size=[30,30], unit_size=10, unit_gap=1, snake_size=3, n_snakes=1, n_foods=1, random_init=True):
+    def __init__(self, grid_size=[30,30], unit_size=10, unit_gap=1, snake_size=3, n_snakes=1, n_foods=1, random_init=True, np_random=np.random):
 
         assert n_snakes < grid_size[0]//3
         assert n_snakes < 25
         assert snake_size < grid_size[1]//2
         assert unit_gap >= 0 and unit_gap < unit_size
 
+        self.np_random = np_random
         self.snakes_remaining = n_snakes
         self.grid = Grid(grid_size, unit_size, unit_gap)
 
@@ -33,7 +34,7 @@ class Controller():
                 self.grid.place_food(start_coord)
         else:
             for i in range(n_foods):
-                self.grid.new_food()
+                self.grid.new_food(np_random)
 
     def move_snake(self, direction, snake_idx):
         """
@@ -76,7 +77,7 @@ class Controller():
             self.grid.connect(snake.body[0], snake.body[1], self.grid.BODY_COLOR)
             self.grid.cover(snake.head, snake.head_color) # Avoid miscount of grid.open_space
             reward = 1
-            self.grid.new_food()
+            self.grid.new_food(self.np_random)
         else:
             reward = 0
             empty_coord = snake.body.popleft()
@@ -119,10 +120,10 @@ class Controller():
             directions = [directions]
 
         for i, direction in enumerate(directions):
-            if self.snakes[i] is None and self.dead_snakes[i] is not None:
-                self.kill_snake(i)
             self.move_snake(direction,i)
             rewards.append(self.move_result(direction, i))
+            if self.snakes[i] is None and self.dead_snakes[i] is not None:
+                self.kill_snake(i)
 
         done = self.snakes_remaining < 1 or self.grid.open_space < 1
         if len(rewards) == 1:
