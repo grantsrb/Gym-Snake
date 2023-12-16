@@ -1,4 +1,5 @@
 import os, subprocess, time, signal
+import numpy as np
 import gym
 from gym import error, spaces, utils
 from gym.utils import seeding
@@ -21,8 +22,19 @@ class SnakeEnv(gym.Env):
         self.n_snakes = n_snakes
         self.n_foods = n_foods
         self.viewer = None
-        self.action_space = Discrete(4)
         self.random_init = random_init
+
+        self.action_space = spaces.Discrete(4)
+
+        controller = Controller(
+            self.grid_size, self.unit_size, self.unit_gap,
+            self.snake_size, self.n_snakes, self.n_foods,
+            random_init=self.random_init)
+        grid = controller.grid
+        self.observation_space = spaces.Box(
+            low=np.min(grid.COLORS),
+            high=np.max(grid.COLORS),
+        )
 
     def step(self, action):
         self.last_obs, rewards, done, info = self.controller.step(action)

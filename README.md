@@ -83,24 +83,24 @@ This will create a vanilla snake environment with 5 food tokens on the map.
 #### Environment Parameter Examples
 Below is the default setting for `snake-v0` play, 15x15 unit grid.
 
-![default](./imgs/default.png)
+![default](./tests/imgs/default.png)
 
 
 Below is the default setting for `snake-plural-v0` play, 25x25 unit grid.
 
-![default](./imgs/default_plural.png)
+![default](./tests/imgs/default_plural.png)
 
 Below is `env.unit_gap` == 0 and a 30x30 grid.
 
-![default](./imgs/nogap.png)
+![default](./tests/imgs/nogap.png)
 
 Below set `env.unit_gap` half the unit size with a 15x15 sized grid.
 
-![default](./imgs/widegap.png)
+![default](./tests/imgs/widegap.png)
 
 Below is a big grid with lots of food and small snakes.
 
-![default](./imgs/biggrid.png)
+![default](./tests/imgs/biggrid.png)
 
 #### General Info
 The snake environment has three main interacting classes to construct the environment. The three are a Snake class, a Grid class, and a Controller class. Each holds information about the environment, and each can be accessed through the gym environment.
